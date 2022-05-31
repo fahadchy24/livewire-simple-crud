@@ -1,7 +1,6 @@
-@extends('layouts.app')
-
-@section('content')
 <div>
+    @include('livewire.modals.company-modal')
+
     <div class="container">
         <div class="row">
             <div class="col-md-12">
@@ -25,7 +24,7 @@
                         <table class="table table-borderd table-striped">
                             <thead>
                                 <tr>
-                                    <th>SL no</th>
+                                    <th>SL No.</th>
                                     <th>Company Name</th>
                                     <th>Company Email</th>
                                     <th>Company Logo</th>
@@ -39,13 +38,13 @@
                                     <td>{{ $loop->index+1 }}</td>
                                     <td>{{ $company->name }}</td>
                                     <td>{{ $company->email }}</td>
-                                    <td>{{ $company->logo }}</td>
-                                    <td>{{ $company->website }}</td>
+                                    <td>{{ $company->logo ?? '-' }}</td>
+                                    <td>{{ $company->website ?? '-' }}</td>
                                     <td>
-                                        <button type="button" data-bs-toggle="modal" data-bs-target="#" wire:click="" class="btn btn-primary">
+                                        <button type="button" data-bs-toggle="modal" data-bs-target="#editCompanyModal" wire:click="editCompany({{$company->id}})" class="btn btn-primary">
                                             Edit
                                         </button>
-                                        <button type="button" data-bs-toggle="modal" data-bs-target="#" wire:click="" class="btn btn-danger">Delete</button>
+                                        <button type="button" data-bs-toggle="modal" data-bs-target="#deleteCompanyModal" wire:click="deleteCompany({{$company->id}})" class="btn btn-danger">Delete</button>
                                     </td>
                                 </tr>
                                 @empty
@@ -65,4 +64,3 @@
     </div>
 
 </div>
-@endsection
