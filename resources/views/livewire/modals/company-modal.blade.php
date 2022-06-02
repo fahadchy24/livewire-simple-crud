@@ -6,7 +6,7 @@
                 <h5 class="modal-title" id="companyModalLabel">Add new company</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" wire:click="closeModal"></button>
             </div>
-            <form wire:submit.prevent="saveCompany">
+            <form wire:submit.prevent="store">
                 <div class="modal-body">
                     <div class="mb-3">
                         <label>Company Name</label>
@@ -46,7 +46,7 @@
                 <h5 class="modal-title" id="editCompanyModalLabel">Edit Company</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" wire:click="closeModal"></button>
             </div>
-            <form wire:submit.prevent="updateCompany">
+            <form wire:submit.prevent="store">
                 <div class="modal-body">
                     <div class="mb-3">
                         <label>Company Name</label>

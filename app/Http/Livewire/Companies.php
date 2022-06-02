@@ -10,7 +10,7 @@ class Companies extends Component
 {
     use WithPagination;
 
-    public $name, $email, $logo, $website;
+    public $name, $email, $logo, $website, $company_id;
     public $search = null;
 
     protected $paginationTheme = 'bootstrap';
@@ -31,51 +31,41 @@ class Companies extends Component
         $this->validateOnly($fields);
     }
 
-
-    // Add new company
-    public function saveCompany()
-    {
-        $validatedData = $this->validate();
-        Company::create($validatedData);
-
-        session()->flash('message', 'Company Added Successfully');
-        $this->resetInput();
-        $this->dispatchBrowserEvent('close-modal');
-    }
-
-
-    // Catching data for editing Company
-    public function editCompany(int $company_id)
-    {
-        $company = Company::find($company_id);
-        if($company){
-
-            $this->company_id = $company->id;
-            $this->name = $company->name;
-            $this->email = $company->email;
-            $this->logo = $company->logo;
-            $this->website = $company->website;
-        }else{
-            return redirect()->to('/companies');
-        }
-    }
-
-    // Update Company
-    public function updateCompany()
+    // Save and Update Company
+    public function store()
     {
         $validatedData = $this->validate();
 
-        Company::where('id',$this->company_id)->update([
+        Company::updateOrCreate(['id' => $this->company_id], [
             'name' => $validatedData['name'],
             'email' => $validatedData['email'],
             'logo' => $validatedData['logo'],
             'website' => $validatedData['website']
         ]);
 
-        session()->flash('message','Company Updated Successfully');
+        session()->flash('message', 'Company Updated Successfully');
         $this->resetInput();
         $this->dispatchBrowserEvent('close-modal');
     }
+
+
+
+    // Catching data for editing Company
+    public function editCompany(int $company_id)
+    {
+        $company = Company::find($company_id);
+        if ($company) {
+
+            $this->company_id = $company->id;
+            $this->name = $company->name;
+            $this->email = $company->email;
+            $this->logo = $company->logo;
+            $this->website = $company->website;
+        } else {
+            return redirect()->to('/companies');
+        }
+    }
+
 
 
     // Catching data for deleting Company
@@ -104,6 +94,7 @@ class Companies extends Component
     // Reset Input
     public function resetInput()
     {
+        $this->company_id = null;
         $this->name = null;
         $this->email = null;
         $this->logo = null;
@@ -113,7 +104,7 @@ class Companies extends Component
 
     public function render()
     {
-        $companies = Company::where('name', 'like', '%'.$this->search.'%')->orderBy('id','DESC')->paginate(5);
+        $companies = Company::where('name', 'like', '%' . $this->search . '%')->orderBy('id', 'DESC')->paginate(5);
         return view('livewire.companies', [
             'companies' => $companies
         ]);
